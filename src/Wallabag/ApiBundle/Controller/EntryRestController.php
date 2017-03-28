@@ -277,7 +277,7 @@ class EntryRestController extends WallabagRestController
         if (!is_null($progress)) {
             $progress = (int) $progress;
             if ($progress >= 0 && $progress <= 100) {
-                $entry->setProgress((int) $progress);
+                $entry->setProgress($progress);
             }
         }
 
