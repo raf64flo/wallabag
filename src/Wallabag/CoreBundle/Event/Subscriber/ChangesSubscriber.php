@@ -1,8 +1,11 @@
 <?php
 
-use Composer\EventDispatcher\EventSubscriberInterface;
+namespace Wallabag\CoreBundle\Event\Subscriber;
+
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Wallabag\CoreBundle\Entity\Change;
 use Wallabag\CoreBundle\Event\EntryDeletedEvent;
 use Wallabag\CoreBundle\Event\EntryTaggedEvent;
 use Wallabag\CoreBundle\Event\EntryUpdatedEvent;
@@ -17,7 +20,6 @@ class ChangesSubscriber implements EventSubscriberInterface
 
     public function __construct(EntityManager $em, LoggerInterface $logger)
     {
-        die;
         $this->logger = $logger;
         $this->em = $em;
     }
@@ -36,7 +38,7 @@ class ChangesSubscriber implements EventSubscriberInterface
      */
     public function onEntryUpdated(EntryUpdatedEvent $event)
     {
-        $change = new Change(Change::MODIFIED_TYPE, $event->getEntry()->getId());
+        $change = new Change(Change::MODIFIED_TYPE, $event->getEntry());
 
         $this->em->persist($change);
         $this->em->flush();
@@ -47,9 +49,9 @@ class ChangesSubscriber implements EventSubscriberInterface
     /**
      * @param EntryDeletedEvent $event
      */
-    public function onEntryRemoved(EntryDeletedEvent $event)
+    public function onEntryDeleted(EntryDeletedEvent $event)
     {
-        $change = new Change(Change::DELETION_TYPE, $event->getEntry()->getId());
+        $change = new Change(Change::DELETION_TYPE, $event->getEntry());
 
         $this->em->persist($change);
         $this->em->flush();
@@ -62,7 +64,7 @@ class ChangesSubscriber implements EventSubscriberInterface
      */
     public function onEntryTagged(EntryTaggedEvent $event)
     {
-        $change = new Change(Change::CHANGED_TAG_TYPE, $event->getEntry()->getId());
+        $change = new Change(Change::CHANGED_TAG_TYPE, $event->getEntry());
 
         $this->em->persist($change);
         $this->em->flush();

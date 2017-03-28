@@ -186,3 +186,5 @@ services:
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@logger"
+        tags:
+            - { name: kernel.event_subscriber }
