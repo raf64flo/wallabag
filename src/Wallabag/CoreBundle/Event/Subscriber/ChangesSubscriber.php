@@ -7,67 +7,66 @@ use Wallabag\CoreBundle\Event\EntryDeletedEvent;
 use Wallabag\CoreBundle\Event\EntryTaggedEvent;
 use Wallabag\CoreBundle\Event\EntryUpdatedEvent;
 
-class ChangesSubscriber implements EventSubscriberInterface {
+class ChangesSubscriber implements EventSubscriberInterface
+{
+    /** @var LoggerInterface $logger */
+    private $logger;
 
-	/** @var LoggerInterface $logger */
-	private $logger;
+    /** @var EntityManager $em */
+    private $em;
 
-	/** @var EntityManager $em */
-	private $em;
+    public function __construct(EntityManager $em, LoggerInterface $logger)
+    {
+        die;
+        $this->logger = $logger;
+        $this->em = $em;
+    }
 
-	function __construct(EntityManager $em, LoggerInterface $logger)
-	{
-		$this->logger = $logger;
-		$this->em = $em;
-	}
+    public static function getSubscribedEvents()
+    {
+        return [
+            EntryUpdatedEvent::NAME => 'onEntryUpdated',
+            EntryDeletedEvent::NAME => 'onEntryDeleted',
+            EntryTaggedEvent::NAME => 'onEntryTagged',
+        ];
+    }
 
-	public static function getSubscribedEvents()
-	{
-		return [
-			EntryUpdatedEvent::NAME => 'onEntryUpdated',
-			EntryDeletedEvent::NAME => 'onEntryDeleted',
-			EntryTaggedEvent::NAME => 'onEntryTagged',
-		];
-	}
+    /**
+     * @param EntryUpdatedEvent $event
+     */
+    public function onEntryUpdated(EntryUpdatedEvent $event)
+    {
+        $change = new Change(Change::MODIFIED_TYPE, $event->getEntry()->getId());
 
-	/**
-	 * @param EntryUpdatedEvent $event
-	 */
-	public function onEntryUpdated(EntryUpdatedEvent $event)
-	{
+        $this->em->persist($change);
+        $this->em->flush();
 
-		$change = new Change(Change::MODIFIED_TYPE, $event->getEntry()->getId());
+        $this->logger->debug('saved updated entry '.$event->getEntry()->getId().' event ');
+    }
 
-		$this->em->persist($change);
-		$this->em->flush();
+    /**
+     * @param EntryDeletedEvent $event
+     */
+    public function onEntryRemoved(EntryDeletedEvent $event)
+    {
+        $change = new Change(Change::DELETION_TYPE, $event->getEntry()->getId());
 
-		$this->logger->debug('saved updated entry ' . $event->getEntry()->getId() . ' event ');
-	}
+        $this->em->persist($change);
+        $this->em->flush();
 
-	/**
-	 * @param EntryDeletedEvent $event
-	 */
-	public function onEntryRemoved(EntryDeletedEvent $event)
-	{
+        $this->logger->debug('saved removed entry '.$event->getEntry()->getId().' event ');
+    }
 
-		$change = new Change(Change::DELETION_TYPE, $event->getEntry()->getId());
+    /**
+     * @param EntryTaggedEvent $event
+     */
+    public function onEntryTagged(EntryTaggedEvent $event)
+    {
+        $change = new Change(Change::CHANGED_TAG_TYPE, $event->getEntry()->getId());
 
-		$this->em->persist($change);
-		$this->em->flush();
+        $this->em->persist($change);
+        $this->em->flush();
 
-		$this->logger->debug('saved removed entry ' . $event->getEntry()->getId() . ' event ');
-	}
-
-	/**
-	 * @param EntryTaggedEvent $event
-	 */
-	public function onEntryTagged(EntryTaggedEvent $event)
-	{
-		$change = new Change(Change::CHANGED_TAG_TYPE, $event->getEntry()->getId());
-
-		$this->em->persist($change);
-		$this->em->flush();
-
-		$this->logger->debug('saved (un)tagged entry ' . $event->getEntry()->getId() . ' event ');
-	}
+        $this->logger->debug('saved (un)tagged entry '.$event->getEntry()->getId().' event ');
+    }
 }

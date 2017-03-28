@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Wallabag\CoreBundle\Entity\Entry;
 use Wallabag\CoreBundle\Entity\Tag;
 use Wallabag\CoreBundle\Event\EntryTaggedEvent;
-use Wallabag\CoreBundle\Event\EntryUpdatedEvent;
 use Wallabag\CoreBundle\Form\Type\NewTagType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -39,7 +38,7 @@ class TagController extends Controller
             $em->persist($entry);
             $em->flush();
 
-			$this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, $tags));
+            $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, $tags));
 
             $this->get('session')->getFlashBag()->add(
                 'notice',
@@ -68,7 +67,7 @@ class TagController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-		$this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, [$tag]));
+        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, [$tag]));
 
         // remove orphan tag in case no entries are associated to it
         if (count($tag->getEntries()) === 0) {

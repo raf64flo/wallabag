@@ -116,11 +116,12 @@ class ContentProxy
      * @param array|string $tags          An array of tag or a string coma separated of tag
      * @param array        $entitiesReady Entities from the EntityManager which are persisted but not yet flushed
      *                                    It is mostly to fix duplicate tag on import @see http://stackoverflow.com/a/7879164/569101
-	 * @return Tag[]
+     *
+     * @return Tag[]
      */
     public function assignTagsToEntry(Entry $entry, $tags, array $entitiesReady = [])
     {
-    	$tagsEntities = [];
+        $tagsEntities = [];
 
         if (!is_array($tags)) {
             $tags = explode(',', $tags);
@@ -159,6 +160,7 @@ class ContentProxy
                 $tagsEntities[] = $tagEntity;
             }
         }
+
         return $tagsEntities;
     }
 

@@ -282,7 +282,7 @@ class EntryRestController extends WallabagRestController
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-		$this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
+        $this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
 
         $json = $this->get('serializer')->serialize($entry, 'json');
 
@@ -327,7 +327,7 @@ class EntryRestController extends WallabagRestController
         $em->flush();
 
         // entry saved, dispatch event about it!
-		$this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
+        $this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
         $this->get('event_dispatcher')->dispatch(EntrySavedEvent::NAME, new EntrySavedEvent($entry));
 
         $json = $this->get('serializer')->serialize($entry, 'json');
@@ -413,7 +413,7 @@ class EntryRestController extends WallabagRestController
         $em->persist($entry);
         $em->flush();
 
-		$this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, $tagsEntries));
+        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, $tagsEntries));
 
         $json = $this->get('serializer')->serialize($entry, 'json');
 
@@ -442,7 +442,7 @@ class EntryRestController extends WallabagRestController
         $em->persist($entry);
         $em->flush();
 
-		$this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, [$tag]));
+        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, [$tag]));
 
         $json = $this->get('serializer')->serialize($entry, 'json');
 

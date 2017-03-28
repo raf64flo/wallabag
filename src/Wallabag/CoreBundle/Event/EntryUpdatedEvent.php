@@ -10,17 +10,17 @@ use Wallabag\CoreBundle\Entity\Entry;
  */
 class EntryUpdatedEvent extends Event
 {
-	const NAME = 'entry.updated';
+    const NAME = 'entry.updated';
 
-	protected $entry;
+    protected $entry;
 
-	public function __construct(Entry $entry)
-	{
-		$this->entry = $entry;
-	}
+    public function __construct(Entry $entry)
+    {
+        $this->entry = $entry;
+    }
 
-	public function getEntry()
-	{
-		return $this->entry;
-	}
+    public function getEntry()
+    {
+        return $this->entry;
+    }
 }

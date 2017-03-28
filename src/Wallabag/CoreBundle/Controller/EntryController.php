@@ -392,7 +392,7 @@ class EntryController extends Controller
         $em->flush();
 
         // entry saved, dispatch event about it!
-		$this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
+        $this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
         $this->get('event_dispatcher')->dispatch(EntrySavedEvent::NAME, new EntrySavedEvent($entry));
 
         return $this->redirect($this->generateUrl('view', ['id' => $entry->getId()]));
@@ -415,7 +415,7 @@ class EntryController extends Controller
         $entry->toggleArchive();
         $this->getDoctrine()->getManager()->flush();
 
-		$this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
+        $this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
 
         $message = 'flashes.entry.notice.entry_unarchived';
         if ($entry->isArchived()) {
@@ -449,7 +449,7 @@ class EntryController extends Controller
         $entry->toggleStar();
         $this->getDoctrine()->getManager()->flush();
 
-		$this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
+        $this->get('event_dispatcher')->dispatch(EntryUpdatedEvent::NAME, new EntryUpdatedEvent($entry));
 
         $message = 'flashes.entry.notice.entry_unstarred';
         if ($entry->isStarred()) {
