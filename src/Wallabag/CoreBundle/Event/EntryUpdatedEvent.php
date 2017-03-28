@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Wallabag\CoreBundle\Entity\Entry;
 
 /**
- * This event is fired as soon as an entry was saved.
+ * This event is fired as soon as an entry was updated.
  */
 class EntryUpdatedEvent extends Event
 {

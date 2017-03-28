@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Change.
  *
+ * This entity stores a datetime for each event (updated or tagged) done on an entry.
+ *
  * @ORM\Entity(repositoryClass="Wallabag\CoreBundle\Repository\ChangeRepository")
  * @ORM\Table(name="`change`")
  */
@@ -19,7 +21,7 @@ class Change
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -28,7 +30,7 @@ class Change
     /**
      * @var int
      *
-     * @ORM\Column(name="type", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $type;
 
@@ -40,15 +42,15 @@ class Change
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="timestamp", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $timestamp;
+    private $createdAt;
 
     public function __construct($type, Entry $entry)
     {
         $this->type = $type;
         $this->entry = $entry;
-        $this->timestamp = new \DateTime();
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -68,27 +70,11 @@ class Change
     }
 
     /**
-     * @param int $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
      * @return DateTime
      */
-    public function getTimestamp()
+    public function getCreatedAt()
     {
-        return $this->timestamp;
-    }
-
-    /**
-     * @param DateTime $timestamp
-     */
-    public function setTimestamp(DateTime $timestamp)
-    {
-        $this->timestamp = $timestamp;
+        return $this->createdAt;
     }
 
     /**
@@ -97,13 +83,5 @@ class Change
     public function getEntry()
     {
         return $this->entry;
-    }
-
-    /**
-     * @param Entry $entry
-     */
-    public function setEntry(Entry $entry)
-    {
-        $this->entry = $entry;
     }
 }

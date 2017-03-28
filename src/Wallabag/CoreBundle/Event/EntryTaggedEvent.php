@@ -7,7 +7,7 @@ use Wallabag\CoreBundle\Entity\Entry;
 use Wallabag\CoreBundle\Entity\Tag;
 
 /**
- * This event is fired as soon as an entry was saved.
+ * This event is fired as soon as a tag is added on an entry.
  */
 class EntryTaggedEvent extends Event
 {
