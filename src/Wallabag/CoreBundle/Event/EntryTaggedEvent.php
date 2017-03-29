@@ -22,6 +22,12 @@ class EntryTaggedEvent extends Event
     public function __construct(Entry $entry, $tags)
     {
         $this->entry = $entry;
+
+        if (false === is_array($tags)) {
+            $tags = [$tags];
+        }
+
+        $this->tags = $tags;
     }
 
     public function getEntry()

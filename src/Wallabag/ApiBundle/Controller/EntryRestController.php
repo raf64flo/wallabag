@@ -442,7 +442,7 @@ class EntryRestController extends WallabagRestController
         $em->persist($entry);
         $em->flush();
 
-        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, [$tag]));
+        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, $tag));
 
         $json = $this->get('serializer')->serialize($entry, 'json');
 

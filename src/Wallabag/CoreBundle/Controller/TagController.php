@@ -67,7 +67,7 @@ class TagController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, [$tag]));
+        $this->get('event_dispatcher')->dispatch(EntryTaggedEvent::NAME, new EntryTaggedEvent($entry, $tag));
 
         // remove orphan tag in case no entries are associated to it
         if (count($tag->getEntries()) === 0) {
