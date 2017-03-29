@@ -448,4 +448,28 @@ class EntryRestController extends WallabagRestController
 
         return (new JsonResponse())->setJson($json);
     }
+
+    /**
+     * Gets history since a date.
+     *
+     * @ApiDoc(
+     *       parameters={
+     *          {"name"="since", "dataType"="integer", "required"=true, "format"="A timestamp", "description"="Timestamp of the history's start"},
+     *       }
+     * )
+     *
+     * @return JsonResponse
+     */
+    public function getEntriesHistoryAction(Request $request)
+    {
+        $this->validateAuthentication();
+
+        $res = $this->getDoctrine()
+            ->getRepository('WallabagCoreBundle:Change')
+            ->findChangesSinceDate($request->query->get('since'));
+
+        $json = $this->get('serializer')->serialize($res, 'json');
+
+        return (new JsonResponse())->setJson($json);
+    }
 }
