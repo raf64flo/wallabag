@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Wallabag\CoreBundle\Entity\Entry;
 use Wallabag\CoreBundle\Entity\Tag;
 use Wallabag\CoreBundle\Event\EntrySavedEvent;
-use Wallabag\CoreBundle\Event\EntryDeletedEvent;
 use Wallabag\CoreBundle\Event\EntryTaggedEvent;
 use Wallabag\CoreBundle\Event\EntryUpdatedEvent;
 
@@ -354,9 +353,6 @@ class EntryRestController extends WallabagRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entry);
         $em->flush();
-
-        // entry deleted, dispatch event about it!
-        $this->get('event_dispatcher')->dispatch(EntryDeletedEvent::NAME, new EntryDeletedEvent($entry));
 
         $json = $this->get('serializer')->serialize($entry, 'json');
 

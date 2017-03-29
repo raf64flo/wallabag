@@ -14,9 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Change
 {
-    const DELETION_TYPE = 1;
-    const MODIFIED_TYPE = 2;
-    const CHANGED_TAG_TYPE = 3;
+    const MODIFIED_TYPE = 1;
+    const CHANGED_TAG_TYPE = 2;
 
     /**
      * @var int

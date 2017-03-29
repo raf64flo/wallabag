@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Wallabag\CoreBundle\Entity\Change;
-use Wallabag\CoreBundle\Event\EntryDeletedEvent;
 use Wallabag\CoreBundle\Event\EntryTaggedEvent;
 use Wallabag\CoreBundle\Event\EntryUpdatedEvent;
 
@@ -28,7 +27,6 @@ class ChangesSubscriber implements EventSubscriberInterface
     {
         return [
             EntryUpdatedEvent::NAME => 'onEntryUpdated',
-            EntryDeletedEvent::NAME => 'onEntryDeleted',
             EntryTaggedEvent::NAME => 'onEntryTagged',
         ];
     }
@@ -44,19 +42,6 @@ class ChangesSubscriber implements EventSubscriberInterface
         $this->em->flush();
 
         $this->logger->debug('saved updated entry '.$event->getEntry()->getId().' event ');
-    }
-
-    /**
-     * @param EntryDeletedEvent $event
-     */
-    public function onEntryDeleted(EntryDeletedEvent $event)
-    {
-        $change = new Change(Change::DELETION_TYPE, $event->getEntry());
-
-        $this->em->persist($change);
-        $this->em->flush();
-
-        $this->logger->debug('saved removed entry '.$event->getEntry()->getId().' event ');
     }
 
     /**
