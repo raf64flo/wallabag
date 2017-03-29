@@ -35,10 +35,16 @@ class Version20170328185535 extends AbstractMigration implements ContainerAwareI
     public function up(Schema $schema)
     {
         try {
-            $changeTable = $schema->getTable($this->getTable('change'));
+            $schema->getTable($this->getTable('change'));
         } catch (SchemaException $e) {
             // The Change table doesn't exist, we need to create it
             if (10 == $e->getCode()) {
+                if ($this->connection->getDatabasePlatform()->getName() == 'sqlite') {
+                    $this->addSql('CREATE TABLE '.$this->getTable('change').' (id INTEGER NOT NULL, entry_id INTEGER DEFAULT NULL, type INTEGER NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_133B9D0FBA364942 FOREIGN KEY (entry_id) REFERENCES '.$this->getTable('entry').' (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+
+                    return true;
+                }
+
                 $changeTable = $schema->createTable($this->getTable('change'));
                 $changeTable->addColumn(
                     'id',
@@ -48,6 +54,11 @@ class Version20170328185535 extends AbstractMigration implements ContainerAwareI
                 $changeTable->addColumn(
                     'type',
                     'integer',
+                    ['notnull' => false]
+                );
+                $changeTable->addColumn(
+                    'created_at',
+                    'datetime',
                     ['notnull' => false]
                 );
                 $changeTable->addColumn(
@@ -80,7 +91,7 @@ class Version20170328185535 extends AbstractMigration implements ContainerAwareI
     {
         try {
             $changeTable = $schema->getTable($this->getTable('change'));
-            $schema->dropTable($this->getTable('change'));
+            $schema->dropTable($changeTable->getName());
         } catch (SchemaException $e) {
             throw new SkipMigrationException('It seems that you already played this migration.');
         }
