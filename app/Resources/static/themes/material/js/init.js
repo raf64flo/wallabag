@@ -93,7 +93,7 @@ $(document).ready(() => {
       app.annotations.load({ entry: x.entryId });
     });
 
-    $(window).scroll(() => {
+    window.addEventListener('unload', () => {
       const scrollTop = $(window).scrollTop();
       const docHeight = $(document).height();
       const scrollPercent = (scrollTop) / (docHeight);

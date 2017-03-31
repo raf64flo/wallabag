@@ -17,7 +17,7 @@ import '../../_global/js/shortcuts/main';
 import '../../_global/js/shortcuts/entry';
 
 /* Tools */
-import { savePercent, retrievePercent } from '../../_global/js/tools';
+import {savePercent, retrievePercent, throttle} from '../../_global/js/tools';
 import toggleSaveLinkForm from './uiTools';
 
 global.jquery = $;
@@ -113,7 +113,7 @@ $.fn.ready(() => {
       app.annotations.load({ entry: x.entryId });
     });
 
-    $(window).scroll(() => {
+    window.addEventListener('unload', () => {
       const scrollTop = $(window).scrollTop();
       const docHeight = $(document).height();
       const scrollPercent = (scrollTop) / (docHeight);

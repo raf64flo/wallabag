@@ -5,30 +5,16 @@ import './shortcuts/entry';
 /* Allows inline call qr-code call */
 import jrQrcode from 'jr-qrcode'; // eslint-disable-line
 
-function supportsLocalStorage() {
-  try {
-    return 'localStorage' in window && window.localStorage !== null;
-  } catch (e) {
-    return false;
-  }
-}
-
 function savePercent(id, percent) {
-  if (!supportsLocalStorage()) { return false; }
-  localStorage[`wallabag.article.${id}.percent`] = percent;
-  return true;
+  fetch(`/progress/${id}/${percent * 100}`, { credentials: 'include' });
 }
 
-function retrievePercent(id) {
-  if (!supportsLocalStorage()) { return false; }
-
-  const bheight = $(document).height();
-  const percent = localStorage[`wallabag.article.${id}.percent`];
-  const scroll = bheight * percent;
+function retrievePercent() {
+  const percent = $('#article').attr('data-progress');
+  console.log(percent);
+  const scroll = $(document).height() * percent;
 
   $('html,body').animate({ scrollTop: scroll }, 'fast');
-
-  return true;
 }
 
 function initFilters() {
@@ -52,4 +38,25 @@ function initExport() {
   }
 }
 
-export { savePercent, retrievePercent, initFilters, initExport };
+function throttle(callback, delay) {
+  let last;
+  let timer;
+  return function () {
+    const context = this;
+    const now = new Date();
+    const args = arguments;
+    if (last && now < last + delay) {
+      // le délai n'est pas écoulé on reset le timer
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        last = now;
+        callback.apply(context, args);
+      }, delay);
+    } else {
+      last = now;
+      callback.apply(context, args);
+    }
+  };
+}
+
+export { savePercent, retrievePercent, initFilters, initExport, throttle };

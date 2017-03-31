@@ -29,6 +29,7 @@ class EntryRestControllerTest extends WallabagApiTestCase
         $this->assertEquals($entry->getUserName(), $content['user_name']);
         $this->assertEquals($entry->getUserEmail(), $content['user_email']);
         $this->assertEquals($entry->getUserId(), $content['user_id']);
+        $this->assertEquals($entry->getProgress(), $content['progress']);
 
         $this->assertEquals('application/json', $this->client->getResponse()->headers->get('Content-Type'));
     }
@@ -338,6 +339,7 @@ class EntryRestControllerTest extends WallabagApiTestCase
         $this->assertEquals('New title for my article', $content['title']);
         $this->assertEquals(1, $content['user_id']);
         $this->assertCount(1, $content['tags']);
+        $this->assertEquals(0, $content['progress']);
     }
 
     public function testPostSameEntry()
@@ -415,6 +417,7 @@ class EntryRestControllerTest extends WallabagApiTestCase
             'tags' => 'new tag '.uniqid(),
             'starred' => '1',
             'archive' => '0',
+            'progress' => '70',
         ]);
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -426,6 +429,7 @@ class EntryRestControllerTest extends WallabagApiTestCase
         $this->assertEquals('New awesome title', $content['title']);
         $this->assertGreaterThan($nbTags, count($content['tags']));
         $this->assertEquals(1, $content['user_id']);
+        $this->assertEquals(70, $content['progress']);
     }
 
     public function testPatchEntryWithoutQuotes()
@@ -632,6 +636,28 @@ class EntryRestControllerTest extends WallabagApiTestCase
         $content = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertEquals(true, $content['is_starred']);
+    }
+
+    public function testChangeProgress()
+    {
+        $entry = $this->client->getContainer()
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('WallabagCoreBundle:Entry')
+            ->findOneByUser(1);
+
+        if (!$entry) {
+            $this->markTestSkipped('No content found in db.');
+        }
+
+        $this->client->request('PATCH', '/api/entries/'.$entry->getId().'json', [
+            'progress' => 69,
+        ]);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->assertEquals(69, $content['progress']);
     }
 
     public function testGetEntriesExists()
