@@ -22,17 +22,6 @@
  * Material icons
  *
  */
-
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(../fonts/MaterialIcons-Regular.eot);
-
-  /* For IE6-8 */
-  src: local("Material Icons"), local("MaterialIcons-Regular"), url(../fonts/MaterialIcons-Regular.woff2) format("woff2"), url(../fonts/MaterialIcons-Regular.woff) format("woff"), url(../fonts/MaterialIcons-Regular.ttf) format("truetype");
-}
-
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -74,71 +63,6 @@
 /* Rules for using icons as white on a dark background. */
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
-
-/**
- *
- * Icomoon icons
- *
- */
-
-@font-face {
-  font-family: icomoon;
-  src: url("../fonts/IcoMoon-Free.ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"]::before,
-[class*=" icon-"]::before {
-  font-family: icomoon;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  background-size: 24px;
-
-  /* Enable Ligatures ================ */
-  letter-spacing: 0;
-  -webkit-font-feature-settings: "liga";
-  -moz-font-feature-settings: "liga=1";
-  -moz-font-feature-settings: "liga";
-  -ms-font-feature-settings: "liga" 1;
-  -o-font-feature-settings: "liga";
-  font-feature-settings: "liga";
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-image {
-  background-size: 16px;
-  background-repeat: no-repeat;
-  padding-right: 1em !important;
-  padding-left: 1em !important;
-}
-
-.icon-eye::before {
-  content: "\e9ce";
-}
-
-.icon-no-eye::before {
-  content: "\e9d1";
-}
-
-.icon-calendar::before {
-  content: "\e953";
-}
-
-.icon-mail::before {
-  content: "\ea86";
-}
-
-.icon-time::before {
-  content: "\e952";
-}
 
 /* Carrot (http://carrot.org) */
 .icon-image--carrot {
@@ -378,6 +302,10 @@ nav {
    2 = Side-nav
    ========================================================================== */
 
+.side-nav {
+  width: 240px;
+}
+
 .side-nav.fixed a {
   font-size: 13px;
   line-height: 44px;
@@ -438,10 +366,12 @@ nav ul a:hover {
   width: 100%;
 }
 
+/*
 .side-nav.fixed.right-aligned {
   right: -250px;
   left: auto !important;
 }
+*/
 
 #filters div.with-checkbox {
   height: 3rem;

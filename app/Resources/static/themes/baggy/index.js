@@ -1,26 +1,26 @@
-/* jQuery */
-import $ from 'jquery';
+import '../_global/index';
 
 /* eslint-disable no-unused-vars */
 /* jquery has default scope */
 import cookie from 'jquery.cookie';
-import ui from 'jquery-ui-browserify';
 /* eslint-enable no-unused-vars */
 
-/* Annotations */
-import annotator from 'annotator';
-
 /* Shortcuts */
-import './shortcuts/main';
-import './shortcuts/entry';
-import '../../_global/js/shortcuts/main';
-import '../../_global/js/shortcuts/entry';
+import './js/shortcuts/main';
+import './js/shortcuts/entry';
 
 /* Tools */
-import { savePercent, retrievePercent } from '../../_global/js/tools';
-import toggleSaveLinkForm from './uiTools';
+import toggleSaveLinkForm from './js/uiTools';
 
 global.jquery = $;
+
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import 'ptsans-npm-webfont/style.css';
+
+import './css/main.css';
+import './css/messages.css';
+import './css/print.css';
+import './css/ratatouille.css';
 
 $.fn.ready(() => {
   const $listmode = $('#listmode');
@@ -76,7 +76,7 @@ $.fn.ready(() => {
 
 
   $('#nav-btn-add-tag').on('click', () => {
-    $('.nav-panel-add-tag').toggle(100);
+    $('.baggy-add-tag').toggle(100);
     $('.nav-panel-menu').addClass('hidden');
     $('#tag_label').focus();
     return false;
@@ -92,39 +92,6 @@ $.fn.ready(() => {
       $('#filters input').val('');
       $('#filters :checked').removeAttr('checked');
       return false;
-    });
-  }
-
-  /* ==========================================================================
-     Annotations & Remember position
-     ========================================================================== */
-
-  if ($('article').length) {
-    const app = new annotator.App();
-
-    app.include(annotator.ui.main, {
-      element: document.querySelector('article'),
-    });
-
-    const x = JSON.parse($('#annotationroutes').html());
-    app.include(annotator.storage.http, x);
-
-    app.start().then(() => {
-      app.annotations.load({ entry: x.entryId });
-    });
-
-    $(window).scroll(() => {
-      const scrollTop = $(window).scrollTop();
-      const docHeight = $(document).height();
-      const scrollPercent = (scrollTop) / (docHeight);
-      const scrollPercentRounded = Math.round(scrollPercent * 100) / 100;
-      savePercent(x.entryId, scrollPercentRounded);
-    });
-
-    retrievePercent(x.entryId);
-
-    $(window).resize(() => {
-      retrievePercent(x.entryId);
     });
   }
 
