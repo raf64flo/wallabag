@@ -1,9 +1,5 @@
+import 'waypoints/lib/noframework.waypoints.js';
 import '../_global/index';
-
-/* eslint-disable no-unused-vars */
-/* jquery has default scope */
-import cookie from 'jquery.cookie';
-/* eslint-enable no-unused-vars */
 
 /* Shortcuts */
 import './js/shortcuts/main';
@@ -14,18 +10,9 @@ import toggleSaveLinkForm from './js/uiTools';
 
 global.jquery = $;
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
-import 'ptsans-npm-webfont/style.css';
-
-import './css/main.css';
-import './css/messages.css';
-import './css/print.css';
-import './css/ratatouille.css';
+import './css/index.scss';
 
 $.fn.ready(() => {
-  const $listmode = $('#listmode');
-  const $listentries = $('#list-entries');
-
   /* ==========================================================================
      Menu
      ========================================================================== */
@@ -39,41 +26,8 @@ $.fn.ready(() => {
   });
 
   /* ==========================================================================
-     List mode or Table Mode
-     ========================================================================== */
-
-  $listmode.click(() => {
-    if ($.cookie('listmode') === 1) {
-      // Cookie
-      $.removeCookie('listmode');
-
-      $listentries.removeClass('listmode');
-      $listmode.removeClass('tablemode');
-      $listmode.addClass('listmode');
-    } else {
-      // Cookie
-      $.cookie('listmode', 1, { expires: 365 });
-
-      $listentries.addClass('listmode');
-      $listmode.removeClass('listmode');
-      $listmode.addClass('tablemode');
-    }
-  });
-
-  /* ==========================================================================
-     Cookie listmode
-     ========================================================================== */
-
-  if ($.cookie('listmode') === 1) {
-    $listentries.addClass('listmode');
-    $listmode.removeClass('listmode');
-    $listmode.addClass('tablemode');
-  }
-
-  /* ==========================================================================
      Add tag panel
      ========================================================================== */
-
 
   $('#nav-btn-add-tag').on('click', () => {
     $('.baggy-add-tag').toggle(100);
@@ -101,6 +55,21 @@ $.fn.ready(() => {
   const currentUrl = window.location.href;
   if (currentUrl.match('&closewin=true')) {
     window.close();
+  }
+
+  if ($('article').size() > 0) {
+    const waypoint = new Waypoint({
+      element: $('.wallabag-title').get(0),
+      handler: (direction) => {
+        console.log(direction);
+        if (direction === 'down') {
+          $('aside.tags').fadeIn('slow');
+        } else {
+          $('aside.tags').fadeOut('slow');
+        }
+      },
+      offset: 250,
+    });
   }
 
   /**
@@ -250,25 +219,24 @@ $.fn.ready(() => {
     toggleBagit();
   });
 
-  const $bagitFormForm = $('#bagit-form-form');
+  const bagitFormForm = $('#bagit-form-form');
 
   /* ==========================================================================
    bag it link and close button
    ========================================================================== */
 
   // send 'bag it link' form request via ajax
-  $bagitFormForm.submit((event) => {
+  bagitFormForm.submit((event) => {
     $('body').css('cursor', 'wait');
     $('#add-link-result').empty();
 
     $.ajax({
-      type: $bagitFormForm.attr('method'),
-      url: $bagitFormForm.attr('action'),
-      data: $bagitFormForm.serialize(),
+      type: bagitFormForm.attr('method'),
+      url: bagitFormForm.attr('action'),
+      data: bagitFormForm.serialize(),
       success: function success() {
         $('#add-link-result').html('Done!');
-        $('#plainurl').val('');
-        $('#plainurl').blur('');
+        $('#plainurl').val('').blur('');
         $('body').css('cursor', 'auto');
       },
       error: function error() {
@@ -286,7 +254,7 @@ $.fn.ready(() => {
 
   $('article a[href^="http"]').after(
       () => `<a href="${$(this).attr('href')}" class="add-to-wallabag-link-after" ` +
-      'alt="add to wallabag" title="add to wallabag"></a>'
+      'title="add to wallabag"></a>'
   );
 
   $('.add-to-wallabag-link-after').click((event) => {

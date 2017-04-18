@@ -4,6 +4,10 @@ import $ from 'jquery';
 /* Annotations */
 import annotator from 'annotator';
 
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import 'lato-font/css/lato-font.css';
+import './global.scss';
+
 import './js/shortcuts/entry';
 import './js/shortcuts/main';
 

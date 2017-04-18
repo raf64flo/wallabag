@@ -12,8 +12,7 @@ window.jQuery = window.$ = global.jQuery = $;
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import './css/main.css';
+import './css/index.scss';
 
 $(document).ready(() => {
   // sideNav

@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-var StyleLintPlugin = require('stylelint-webpack-plugin');
+let StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -23,12 +23,12 @@ module.exports = {
       failOnError: false,
       quiet: false,
       context: 'app/Resources/static/themes',
-      files: '**/*.css',
+      files: '**/*.scss',
     }),
   ],
   module: {
     rules: [{
-      test: /\.css$/,
+      test: /\.(s)?css$/,
       use: [
         'style-loader',
         {
@@ -46,7 +46,8 @@ module.exports = {
               ];
             }
           }
-        }
+        },
+        'sass-loader'
       ]
     },
     {
