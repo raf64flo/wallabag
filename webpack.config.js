@@ -27,7 +27,18 @@ module.exports = {
     }),
   ],
   module: {
-    rules: [{
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+        loader: 'babel-loader',
+          options: {
+            presets: ['env']
+          }
+        }
+      },
+      {
       test: /\.(s)?css$/,
       use: [
         'style-loader',

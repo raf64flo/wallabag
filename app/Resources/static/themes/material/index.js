@@ -1,3 +1,4 @@
+/* Global imports */
 import '../_global/index';
 
 /* Tools */
@@ -7,11 +8,12 @@ import { initExport, initFilters } from './js/tools';
 import './js/shortcuts/main';
 import './js/shortcuts/entry';
 
-window.jQuery = window.$ = global.jQuery = $;
 
+/* Materialize imports */
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
 
+/* Theme style */
 import './css/index.scss';
 
 $(document).ready(() => {

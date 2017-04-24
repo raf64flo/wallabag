@@ -1,4 +1,4 @@
-import 'waypoints/lib/noframework.waypoints.js';
+/* Global imports */
 import '../_global/index';
 
 /* Shortcuts */
@@ -8,8 +8,7 @@ import './js/shortcuts/entry';
 /* Tools */
 import toggleSaveLinkForm from './js/uiTools';
 
-global.jquery = $;
-
+/* Theme style */
 import './css/index.scss';
 
 $.fn.ready(() => {
